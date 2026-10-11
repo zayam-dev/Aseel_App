@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aseel Disease Detector & Treatment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #080d1a;
+            --card-bg: #111927;
+            --card-inner: #162236;
+            --accent-red: #ef4444;
+            --accent-red-glow: rgba(239, 68, 68, 0.4);
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --text-main: #f8fafc;
+            --text-sub: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --border-light: #2d3b55;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 30px 16px 60px 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 760px;
+        }
+
+        /* --- Header & Round DP --- */
+        header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .avatar-wrapper {
+            width: 105px;
+            height: 105px;
+            margin: 0 auto 16px auto;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            box-shadow: 0 0 25px var(--accent-red-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #080d1a;
+            background-color: #111927;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 13.5px;
+            font-weight: 500;
+        }
+
+        /* --- Upload Card --- */
+        .upload-card {
+            background: var(--card-bg);
+            border: 1.5px dashed var(--border-light);
+            border-radius: 20px;
+            padding: 28px 20px;
+            text-align: center;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .upload-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .upload-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .upload-subtitle {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-ui {
+            background: #1b263b;
+            color: #ffffff;
+            border: 1px solid var(--border-light);
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-ui:hover {
+            background: #25334e;
+            border-color: #3e5074;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary-red {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            box-shadow: 0 4px 15px var(--accent-red-glow);
+        }
+
+        .btn-primary-red:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 4px 12px 4px;
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .clear-link {
+            color: var(--accent-red);
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .preview-list {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .preview-box {
+            position: relative;
+            width: 85px;
+            height: 85px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--border-light);
+        }
+
+        .preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-box .btn-remove {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #ef4444, #e11d48);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 20px var(--accent-red-glow);
+        }
+
+        .btn-submit:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:disabled {
+            background: #334155;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* --- Diagnosis Results --- */
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .diagnosis-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .disease-headline {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .disease-subline {
+            font-size: 14.5px;
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .match-tag {
+            background: var(--accent-red);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .tag-healthy {
+            background: var(--accent-green);
+        }
+
+        .tag-invalid {
+            background: #64748b;
+        }
+
+        /* Categorized Modular Boxes */
+        .modular-box {
+            background: var(--card-inner);
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+            border-left: 4px solid var(--border-light);
+        }
+
+        .box-alert {
+            border-left-color: var(--accent-red);
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .box-symptoms {
+            border-left-color: var(--accent-blue);
+        }
+
+        .box-care {
+            border-left-color: var(--accent-amber);
+            background: rgba(245, 158, 11, 0.06);
+        }
+
+        .box-desi {
+            border-left-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.06);
+        }
+
+        .box-medical {
+            border-left-color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.06);
+        }
+
+        .box-header-title {
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .title-alert {
+            color: #f87171;
+        }
+
+        .title-symptoms {
+            color: #60a5fa;
+        }
+
+        .title-care {
+            color: #fbbf24;
+        }
+
+        .title-desi {
+            color: #34d399;
+        }
+
+        .title-medical {
+            color: #22d3ee;
+        }
+
+        .text-english {
+            font-size: 13.5px;
+            color: var(--text-main);
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+
+        .text-roman {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+            line-height: 1.5;
+            border-top: 1px dashed rgba(255, 255, 255, 0.08);
+            padding-top: 6px;
+        }
+
+        /* Action Buttons */
+        .report-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-action-btn {
+            flex: 1;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-wa {
+            background: #25D366;
+            color: #052e16;
+        }
+
+        .btn-action-wa:hover {
+            background: #22c55e;
+        }
+
+        .btn-action-print {
+            background: #1e293b;
+            color: #f8fafc;
+            border: 1px solid var(--border-light);
+        }
+
+        .btn-action-print:hover {
+            background: #334155;
+        }
+
+        /* Print Styling */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+            }
+
+            .upload-card,
+            .report-actions,
+            .avatar-wrapper,
+            header p {
+                display: none !important;
+            }
+
+            header h1 {
+                color: black !important;
+                font-size: 18px;
+            }
+
+            .diagnosis-card {
+                border: 1px solid #ccc !important;
+                background: white !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+            }
+
+            .disease-headline,
+            .text-english,
+            .text-roman {
+                color: black !important;
+            }
+
+            .modular-box {
+                background: #f8fafc !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <div class="avatar-wrapper">
+                <img src="/logo" alt="Aseel" class="avatar-img"
+                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=150&auto=format&fit=crop';">
+            </div>
+            <h1>ASEEL DISEASE DETECTOR AND TREATMENT</h1>
+            <p>AI Diagnostic System & YouTube Recommended Expert Care</p>
+        </header>
+
+        <div class="upload-card">
+            <div class="upload-icon">📷</div>
+            <div class="upload-title">Click / Tap to Select Beeth Photos</div>
+            <div class="upload-subtitle">Upload 1 to 3 images (JPG, PNG, WEBP). Select all together or one by one.</div>
+
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
+            <input type="file" id="galleryInput" accept="image/*" multiple style="display:none">
+
+            <div class="btn-row">
+                <button class="btn-ui btn-primary-red" type="button"
+                    onclick="document.getElementById('cameraInput').click()">
+                    📷 Open Camera
+                </button>
+                <button class="btn-ui" type="button" onclick="document.getElementById('galleryInput').click()">
+                    📁 Select from Gallery
+                </button>
+            </div>
+
+            <div class="preview-header" id="previewHeader" style="display:none;">
+                <span id="fileCountLabel">0/3 Images Selected</span>
+                <span class="clear-link" onclick="clearAllFiles()">Clear All</span>
+            </div>
+
+            <div class="preview-list" id="previewList"></div>
+
+            <button class="btn-submit" id="analyzeBtn" onclick="analyzeImages()">
+                Analyze Images & Get Complete Treatment
+            </button>
+        </div>
+
+        <div class="results-container" id="resultsArea"></div>
+    </div>
+
+    <script>
+        let selectedFiles = [];
+
+        const cameraInput = document.getElementById('cameraInput');
+        const galleryInput = document.getElementById('galleryInput');
+        const previewList = document.getElementById('previewList');
+        const previewHeader = document.getElementById('previewHeader');
+        const fileCountLabel = document.getElementById('fileCountLabel');
+        const resultsArea = document.getElementById('resultsArea');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+
+        cameraInput.addEventListener('change', (e) => addFiles(e.target.files));
+        galleryInput.addEventListener('change', (e) => addFiles(e.target.files));
+
+        function addFiles(files) {
+            for (let file of files) {
+                if (selectedFiles.length < 3) {
+                    selectedFiles.push(file);
+                }
+            }
+            renderPreviews();
+        }
+
+        function removeSingleFile(index) {
+            selectedFiles.splice(index, 1);
+            renderPreviews();
+        }
+
+        function clearAllFiles() {
+            selectedFiles = [];
+            cameraInput.value = '';
+            galleryInput.value = '';
+            renderPreviews();
+            resultsArea.innerHTML = '';
+        }
+
+        function renderPreviews() {
+            previewList.innerHTML = '';
+            if (selectedFiles.length > 0) {
+                previewHeader.style.display = 'flex';
+                fileCountLabel.innerText = `${selectedFiles.length}/3 Images Selected`;
+            } else {
+                previewHeader.style.display = 'none';
+            }
+
+            selectedFiles.forEach((file, idx) => {
+                const box = document.createElement('div');
+                box.className = 'preview-box';
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'btn-remove';
+                removeBtn.innerHTML = '&times;';
+                removeBtn.onclick = () => removeSingleFile(idx);
+
+                box.appendChild(img);
+                box.appendChild(removeBtn);
+                previewList.appendChild(box);
+            });
+        }
+
+        async function analyzeImages() {
+            if (selectedFiles.length === 0) {
+                alert('Pehle camera se photo lein ya gallery se select karein!');
+                return;
+            }
+
+            analyzeBtn.disabled = true;
+            analyzeBtn.innerText = 'Analyzing Droppings with AI...';
+            resultsArea.innerHTML = '';
+
+            const formData = new FormData();
+            selectedFiles.forEach(f => formData.append('images', f));
+
+            try {
+                const res = await fetch('/predict', { method: 'POST', body: formData });
+                const data = await res.json();
+
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                renderDiagnosisCards(data.results);
+            } catch (err) {
+                alert('Server error: ' + err.message);
+            } finally {
+                analyzeBtn.disabled = false;
+                analyzeBtn.innerText = 'Analyze Images & Get Complete Treatment';
+            }
+        }
+
+        function renderDiagnosisCards(results) {
+            resultsArea.innerHTML = '';
+
+            results.forEach((item, idx) => {
+                let tagClass = 'match-tag';
+                if (item.class_key === 'healthy') tagClass += ' tag-healthy';
+                if (item.class_key === 'invalid') tagClass += ' tag-invalid';
+
+                const card = document.createElement('div');
+                card.className = 'diagnosis-card';
+
+                const isDisease = item.class_key !== 'invalid' && item.class_key !== 'healthy';
+
+                card.innerHTML = `
+                <div class="card-header-flex">
+                    <div>
+                        <div class="disease-headline">${item.disease_en}</div>
+                        <div class="disease-subline">${item.disease_roman}</div>
+                    </div>
+                    <div class="${tagClass}">${item.confidence}% Match</div>
+                </div>
+
+                <div class="modular-box box-alert">
+                    <div class="box-header-title title-alert">🚨 Emergency Alert / Fauri Action</div>
+                    <div class="text-english">${item.alert_en}</div>
+                    <div class="text-roman">${item.alert_roman}</div>
+                </div>
+
+                ${item.symptoms_roman !== 'N/A' ? `
+                <div class="modular-box box-symptoms">
+                    <div class="box-header-title title-symptoms">🔍 Symptoms & Identification / Pehchan</div>
+                    <div class="text-english">${item.symptoms_en}</div>
+                    <div class="text-roman">${item.symptoms_roman}</div>
+                </div>` : ''}
+
+                ${item.care_roman !== 'N/A' ? `
+                <div class="modular-box box-care">
+                    <div class="box-header-title title-care">⚠️ Precaution, Care & Nuqsanat / Ahtiyat</div>
+                    <div class="text-english">${item.care_en}</div>
+                    <div class="text-roman">${item.care_roman}</div>
+                </div>` : ''}
+
+                ${item.desi_roman !== 'N/A' ? `
+                <div class="modular-box box-desi">
+                    <div class="box-header-title title-desi">🌿 Desi Nuskha & Home Care / Gharelu Ilaj</div>
+                    <div class="text-english">${item.desi_en}</div>
+                    <div class="text-roman">${item.desi_roman}</div>
+                </div>` : ''}
+
+                ${item.medical_roman !== 'N/A' ? `
+                <div class="modular-box box-medical">
+                    <div class="box-header-title title-medical">💊 Veterinary Dose & Medical Treatment / Dawaai</div>
+                    <div class="text-english">${item.medical_en}</div>
+                    <div class="text-roman">${item.medical_roman}</div>
+                </div>` : ''}
+
+                ${isDisease ? `
+                <div class="report-actions">
+                    <button class="btn-action-btn btn-action-wa" onclick="shareToWhatsApp(${idx})">
+                        💬 Share Treatment on WhatsApp
+                    </button>
+                    <button class="btn-action-btn btn-action-print" onclick="window.print()">
+                        🖨️ Save Prescription (PDF)
+                    </button>
+                </div>` : ''}
+            `;
+
+                resultsArea.appendChild(card);
+                window['diagData_' + idx] = item;
+            });
+        }
+
+        function shareToWhatsApp(idx) {
+            const item = window['diagData_' + idx];
+            if (!item) return;
+
+            const text =
+                `*🐔 ASEEL POULTRY DIAGNOSIS REPORT*
+*Bimari:* ${item.disease_en} / ${item.disease_roman} (${item.confidence}% Match)
+
+*🚨 Fauri Action:*
+${item.alert_roman}
+
+*🔍 Pehchan / Symptoms:*
+${item.symptoms_roman}
+
+*⚠️ Ahtiyat & Care:*
+${item.care_roman}
+
+*🌿 Desi Nuskha:*
+${item.desi_roman}
+
+*💊 Medical Ilaj:*
+${item.medical_roman}
+
+_Aseel Disease Diagnostic AI_`;
+
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+        }
+    </script>
+
+</body>
+
+</html>
