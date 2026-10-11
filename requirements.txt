@@ -1,6 +1,5 @@
-flask
-tflite-runtime
-opencv-python-headless
-numpy
+streamlit
 pillow
-gunicorn
+numpy
+opencv-python-headless
+tensorflow-cpu
