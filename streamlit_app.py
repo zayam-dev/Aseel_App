@@ -1,19 +1,16 @@
+import os
 import streamlit as st
 import numpy as np
 import cv2
 from PIL import Image
+import tensorflow as tf
 
 st.set_page_config(page_title="Aseel Disease Detector", page_icon="🐓", layout="centered")
 
-# TFLite Loader
-try:
-    import tflite_runtime.interpreter as tflite
-except ImportError:
-    import tensorflow.lite as tflite
-
 @st.cache_resource
 def load_model():
-    interpreter = tflite.Interpreter(model_path="model.tflite")
+    model_path = os.path.join(os.path.dirname(__file__), "model.tflite")
+    interpreter = tf.lite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
     return interpreter
 
